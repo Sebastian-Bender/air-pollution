@@ -34,7 +34,6 @@ def get_data():
     df = df[df.latitude <= latitude_max]
     df = df[df.latitude >= latitude_min]
 
-    df.reset_index(inplace = True, drop = True)
 
     df['SensorID'] = df['sensor'].apply(lambda x: x.get('id'))
 
@@ -45,18 +44,21 @@ def get_data():
 
     df.drop(['sensor', 'sensordatavalues'], axis = 1, inplace = True)
 
+    # only keep the newest value for sensors with multiple values
+    df.sort_values(by = ['SensorID', 'timestamp'], ascending = False, inplace = True)
+    df.drop_duplicates(subset='SensorID', keep="first", inplace = True)
+    
+    df.reset_index(inplace = True, drop = True)
+    
     return df
 
 def get_historical_data():
     return ""
 
 def data_to_json(df):
-    df.sort_values(by = ['SensorID', 'timestamp'], ascending = False, inplace = True)
-    df.drop_duplicates(subset='SensorID', keep="first", inplace = True)
-    df.SensorID = df.SensorID.apply(str)
-    df.set_index('SensorID', inplace = True)
-    print(df)
-    return df.to_json(orient = "index")
+    return df.to_dict('index')
 
-df = get_data()
-print(df)
+
+if __name__ == '__main__':
+    df = get_data()
+    print(df)

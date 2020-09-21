@@ -22,10 +22,10 @@
       });
         
       const lat = 52.0266732
-      const long = 8.9018625;
+      const long = 8.9018625
       
       // Obtain the default map types from the platform object
-      var maptypes = platform.createDefaultLayers();
+      var maptypes = platform.createDefaultLayers()
 
       // Instantiate (and display) a map object:
       var map = new H.Map(
@@ -37,22 +37,36 @@
           pixelRatio: window.devicePixelRatio || 1
         });
 
-      window.addEventListener('resize', () => map.getViewPort().resize());
+      window.addEventListener('resize', () => map.getViewPort().resize())
       // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-      var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+      var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map))
 
-      var ui = H.ui.UI.createDefault(map, maptypes);
+      var ui = H.ui.UI.createDefault(map, maptypes)
 
       // drawing a marker for each sensor
       var sensors = '{{df_json|tojson}}'
-      console.log(sensors)
-      //var json = JSON.parse(sensors)
       //console.log(sensors)
+      var json = JSON.parse(sensors)
+      console.log(Object.keys(json).length)
       
-      var marker = new H.map.Marker({ lat: lat, lng: long });
-        
-      // Add the marker to the map:
-      map.addObject(marker);
+      for(var i = 0; i < Object.keys(json).length; i++) {
+        var test_lat = json[i]['latitude']
+        var test_lon = json[i]['longitude']
+  
+        var innerElement = document.createElement('div')
+        innerElement.style.color = 'red';
+        innerElement.style.backgroundColor = 'blue';
+        innerElement.style.border = '2px solid black';
+        innerElement.style.font = 'normal 12px arial';
+        innerElement.style.lineHeight = '12px'
+        innerElement.innerHTML = `<div>${ json[i]["P1"] }<br>${ json[i]["P2"] }</div>`
+  
+        var icon = new H.map.DomIcon(innerElement)
+        var marker = new H.map.DomMarker({ lat: test_lat, lng: test_lon }, {icon: icon})
+          
+        // Add the marker to the map:
+        map.addObject(marker)
+      }
         
     </script>
     <div></div>

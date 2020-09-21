@@ -1,4 +1,4 @@
-from flask import Flask,render_template
+from flask import Flask,render_template, jsonify
 import main
 
 app = Flask(__name__)
@@ -9,6 +9,7 @@ def map_func():
         api_key = file.read()
 
     df_json = main.data_to_json(main.get_data())
+    #df_json = jsonify(df_json)
     return render_template('map.html', apikey = api_key, df_json = df_json)
 
 if __name__ == '__main__':
