@@ -21,11 +21,12 @@
         'apikey': api_key
       });
         
-      const lat = 52.0266732
-      const long = 8.9018625
+      const lat = (51.4762 + 52.2396) / 2
+      const long = (8.3255 + 9.5537) / 2
       
       // Obtain the default map types from the platform object
       var maptypes = platform.createDefaultLayers()
+      maptypes.vector.normal.map.setMin(9.5)
 
       // Instantiate (and display) a map object:
       var map = new H.Map(
@@ -58,136 +59,54 @@
         // test start
         var outerElement = document.createElement('div')
         var innerElement = document.createElement('div')
+        
+        outerElement.style.color = 'white'
+        outerElement.style.backgroundColor = 'green'
+        if(json[i]['P1'] >= 40) {
+          outerElement.style.background = 'red'
+        }
+        else if(json[i]['P1'] >= 20) {
+          outerElement.style.backgroundColor = 'yellow'
+        }
+        outerElement.style.border = '2px solid black'
+        outerElement.style.font = 'normal 10px arial'
+        outerElement.style.borderRadius = '80%'
+        outerElement.style.width = '3em'
+        outerElement.style.height = '3.5em'
+        outerElement.style.textAlign = 'center'
+        outerElement.style.marginTop = '-1.75em'
+        outerElement.style.marginLeft = '- 1.5em'
+        
+        innerElement.innerHTML = `<p>${ json[i]["P1"] }<br>${ json[i]["P2"] }</p>`
+        innerElement.style.marginTop = '-0.5em'
+        innerElement.style.textShadow = '0 0 2px #FF0000, 0 0 5px #0000FF'
 
-        outerElement.style.width = '30px'
-        outerElement.innerHTML = `
-        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <!-- Created with Inkscape (http://www.inkscape.org/) -->
-        <svg
-            xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-            xmlns:cc="http://creativecommons.org/ns#"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xmlns:dc="http://purl.org/dc/elements/1.1/"
-            xmlns:svg="http://www.w3.org/2000/svg"
-            xmlns:ns1="http://sozi.baierouge.fr"
-            id="svg4341"
-            sodipodi:docname="New document 5"
-            viewBox="0 0 21.023 32.743"
-            version="1.1"
-            inkscape:version="0.48.2 r9819"
-          >
-          <defs
-              id="defs4343"
-            >
-            <radialGradient
-                id="radialGradient4184"
-                gradientUnits="userSpaceOnUse"
-                cy="2.3351"
-                cx="12.5"
-                gradientTransform="matrix(.99167 .0041626 -.0041976 .99999 .11387 -.052012)"
-                r="9.9625"
-                inkscape:collect="always"
-              >
-              <stop
-                  id="stop3773-9"
-                  style="stop-color:#b2b2b2"
-                  offset="0"
-              />
-              <stop
-                  id="stop3775-86"
-                  style="stop-color:#000203"
-                  offset="1"
-              />
-            </radialGradient
-            >
-          </defs
-          >
-          <sodipodi:namedview
-              id="base"
-              bordercolor="#666666"
-              inkscape:pageshadow="2"
-              inkscape:window-y="1192"
-              fit-margin-left="0"
-              pagecolor="#ffffff"
-              fit-margin-top="0"
-              inkscape:window-maximized="1"
-              inkscape:zoom="1.4"
-              inkscape:window-x="632"
-              inkscape:window-height="748"
-              showgrid="false"
-              borderopacity="1.0"
-              inkscape:current-layer="layer1"
-              inkscape:cx="-330.09739"
-              inkscape:cy="60.990989"
-              fit-margin-right="0"
-              fit-margin-bottom="0"
-              inkscape:window-width="1280"
-              inkscape:pageopacity="0.0"
-              inkscape:document-units="px"
-          />
-          <g
-              id="layer1"
-              inkscape:label="Layer 1"
-              inkscape:groupmode="layer"
-              transform="translate(-364.49 -516.36)"
-            >
-            <g
-                id="layer1-7"
-                style="opacity:.65"
-                inkscape:export-ydpi="90"
-                inkscape:transform-center-x="-0.37359071"
-                inkscape:transform-center-y="-16.172808"
-                inkscape:export-filename="C:\Users\Joshua\Desktop\Other Files\map markers\spoken-word.png"
-                transform="matrix(-.84290 -.014163 -.014163 .84290 400.07 -337.63)"
-                inkscape:export-xdpi="90"
-                inkscape:label="Layer 1"
-              >
-              <path
-                  id="path2987-1"
-                  sodipodi:nodetypes="sscccss"
-                  d="m12.5 1013.9c-6.6169 0-11.98 5.3547-11.98 11.962 0 4.7357 2.7733 8.8206 6.771 10.759l5.2085 14.238c1.9367-4.729 3.6869-9.5241 5.4038-14.335 3.8908-1.9764 6.5757-6.0043 6.5757-10.662 0-6.6075-5.3626-11.962-11.98-11.962z"
-                  inkscape:transform-center-x="0.15624996"
-                  inkscape:transform-center-y="5.46875"
-                  inkscape:connector-curvature="0"
-                  style="stroke:#000000;fill:#282828"
-              />
-              <path
-                  id="path3769-1"
-                  sodipodi:rx="9.4642859"
-                  sodipodi:ry="9.4642859"
-                  style="fill:url(#radialGradient4184)"
-                  sodipodi:type="arc"
-                  d="m21.964 11.5c0 5.227-4.2373 9.4643-9.4643 9.4643s-9.4643-4.2373-9.4643-9.4643 4.2373-9.4643 9.4643-9.4643 9.4643 4.2373 9.4643 9.4643z"
-                  transform="matrix(1.1041 0 0 1.1041 -1.3018 1013.2)"
-                  sodipodi:cy="11.5"
-                  sodipodi:cx="12.5"
-              />
-            </g
-            >
-          </g
-          >
-        </svg>        
-        `;
-        //test end
-
-        /*innerElement.style.color = 'red';
-        innerElement.style.backgroundColor = 'blue';
-        innerElement.style.border = '2px solid black';
-        innerElement.style.font = 'normal 12px arial';
-        innerElement.style.lineHeight = '12px'
-        */
-        innerElement.innerHTML = `<div>${ json[i]["P1"] }<br>${ json[i]["P2"] }</div>`
         outerElement.appendChild(innerElement)
-        //var icon = new H.map.DomIcon(innerElement)
         var icon = new H.map.DomIcon(outerElement)
         var marker = new H.map.DomMarker({ lat: test_lat, lng: test_lon }, {icon: icon})
           
         // Add the marker to the map:
         map.addObject(marker)
       }
+
+      var bounds = new H.geo.Rect(51.4762, 8.3255, 52.2396, 9.5537)
+      map.getViewModel().addEventListener('sync', function() {
+        var center = map.getCenter();
+    
+        if (!bounds.containsPoint(center)) {
+          if (center.lat > bounds.getTop()) {
+            center.lat = bounds.getTop();
+          } else if (center.lat < bounds.getBottom()) {
+            center.lat = bounds.getBottom();
+          }
+          if (center.lng < bounds.getLeft()) {
+            center.lng = bounds.getLeft();
+          } else if (center.lng > bounds.getRight()) {
+            center.lng = bounds.getRight();
+          }
+          map.setCenter(center);
+        }
+      });
         
     </script>
     <div></div>
