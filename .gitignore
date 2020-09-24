@@ -5,3 +5,4 @@ __pychache__/
 .vscode/
 .DS_Store
 AirPollution/src/api_key.txt
+sensor.db

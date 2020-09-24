@@ -1,12 +1,13 @@
 import requests
 import pandas as pd
+import sqlite3
 
 # longitudes
-longitude_min = 8.3255 
+longitude_min = 8.3255
 longitude_max = 9.5537
 
 # latitudes
-latitude_max = 52.2396 
+latitude_max = 52.2396
 latitude_min = 51.4762
 
 def get_data():
@@ -52,13 +53,14 @@ def get_data():
     
     return df
 
-def get_historical_data():
-    return ""
+def read_DB():
+    conn = sqlite3.connect('sensor.db')
+    df = pd.read_sql_query('SELECT * FROM sensorData', conn, index_col='index')
+    print(df)
 
 def data_to_json(df):
     return df.to_dict('index')
 
 
 if __name__ == '__main__':
-    df = get_data()
-    print(df)
+    read_DB()
