@@ -51,14 +51,24 @@ def get_data():
     df.sort_values(by = ['SensorID', 'timestamp'], ascending = False, inplace = True)
     df.drop_duplicates(subset='SensorID', keep="first", inplace = True)
     
+    df = df[['timestamp', 'SensorID', 'latitude', 'longitude', 'P1', 'P2']]
+    df.columns = ['timestamp', 'sensor_id', 'latitude', 'longitude', 'PM10', 'PM2_5']
     df.reset_index(inplace = True, drop = True)
     
     return df
 
 def create_temp_DB():
+    conn = sqlite3.connect('sensor.db')
+    c = conn.cursor()
+    #if (c.execute('SELECT name FROM sensor.db WHERE type = "table" AND name = "tempData"')):
+    c.execute('DROP TABLE tempData')
     df = get_data()
-    
-    return ""
+    df.to_sql(name = 'tempData', con = conn)
+
+def read_temp_DB():
+    conn = sqlite3.connect('sensor.db')
+    df = pd.read_sql_query('SELECT * FROM tempData', con = conn, index_col = 'index')
+    return df
 
 def get_sensorList():
     df = get_data()
@@ -71,10 +81,8 @@ def get_sensorList():
         for i in sensorList:
             f.writelines('%s\n' %i)
 
-
 def create_DB():
     conn = sqlite3.connect('sensor.db')
-    c = conn.cursor()
 
     #c.execute('''CREATE TABLE sensorData
     #            (id int, date datetime, sensor_id int, latitude decimal, longitude decimal, pm10 real, pm2_5 real)''')
@@ -112,6 +120,11 @@ def create_DB():
     sensorData.reset_index(inplace = True, drop = True)
 
     sensorData.to_sql(name = 'sensorData', con = conn)
+
+def update_DB():
+    conn = sqlite3.connect('sensor.db')
+    df = read_temp_DB()
+    df.to_sql(name = 'sensorData', con = conn, if_exists = 'append')
 
 def read_DB():
     conn = sqlite3.connect('sensor.db')

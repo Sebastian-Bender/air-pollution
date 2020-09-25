@@ -10,9 +10,9 @@
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
   </head>
     
-  <body style='margin: 0'>
-    <h1><a href="#">FeinstaubOWL</a></h1>
-    <div style="width: 80%; height: 80%" id="mapContainer"></div>
+  <body>
+    <h1><a href=".">FeinstaubOWL</a></h1>
+    <div style="width: 90%; height: 90%; padding: 1.5em" id="mapContainer"></div>
 
     <script>	
       // Initialize the platform object:
@@ -26,14 +26,14 @@
       
       // Obtain the default map types from the platform object
       var maptypes = platform.createDefaultLayers()
-      maptypes.vector.normal.map.setMin(9.5)
+      maptypes.vector.normal.map.setMin(9)
 
       // Instantiate (and display) a map object:
       var map = new H.Map(
         document.getElementById('mapContainer'),
         maptypes.vector.normal.map,
         {
-          zoom: 10,
+          zoom: 9.7,
           center: { lat: lat, lng: long },
           pixelRatio: window.devicePixelRatio || 1
         });
@@ -49,12 +49,11 @@
       //console.log(sensors)
       var json = JSON.parse(sensors)
       console.log(Object.keys(json).length)
+      console.log(json[0])
       
       for(var i = 0; i < Object.keys(json).length; i++) {
-        var test_lat = json[i]['latitude']
-        var test_lon = json[i]['longitude']
-  
-        //var innerElement = document.createElement('div')
+        var sensor_lat = json[i]['latitude']
+        var sensor_lon = json[i]['longitude']
 
         // test start
         var outerElement = document.createElement('div')
@@ -62,10 +61,10 @@
         
         outerElement.style.color = 'white'
         outerElement.style.backgroundColor = 'green'
-        if(json[i]['P1'] >= 40) {
+        if(json[i]['PM10'] >= 40) {
           outerElement.style.background = 'red'
         }
-        else if(json[i]['P1'] >= 20) {
+        else if(json[i]['PM10'] >= 20) {
           outerElement.style.backgroundColor = 'yellow'
         }
         outerElement.style.border = '2px solid black'
@@ -77,13 +76,13 @@
         outerElement.style.marginTop = '-1.75em'
         outerElement.style.marginLeft = '- 1.5em'
         
-        innerElement.innerHTML = `<p>${ json[i]["P1"] }<br>${ json[i]["P2"] }</p>`
+        innerElement.innerHTML = `<p>${ json[i]["PM10"] }<br>${ json[i]["PM2_5"] }</p>`
         innerElement.style.marginTop = '-0.5em'
         innerElement.style.textShadow = '0 0 2px #FF0000, 0 0 5px #0000FF'
 
         outerElement.appendChild(innerElement)
         var icon = new H.map.DomIcon(outerElement)
-        var marker = new H.map.DomMarker({ lat: test_lat, lng: test_lon }, {icon: icon})
+        var marker = new H.map.DomMarker({ lat: sensor_lat, lng: sensor_lon }, {icon: icon})
           
         // Add the marker to the map:
         map.addObject(marker)
