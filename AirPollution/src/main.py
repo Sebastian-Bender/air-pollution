@@ -72,8 +72,6 @@ def read_temp_DB():
 
 def get_sensorList():
     df = get_data()
-    #df['SensorID'] = df['sensor'].apply(lambda x: x.get('id'))
-
     sensorList = set(df['SensorID'])
     print(len(sensorList))
 
@@ -83,9 +81,6 @@ def get_sensorList():
 
 def create_DB():
     conn = sqlite3.connect('sensor.db')
-
-    #c.execute('''CREATE TABLE sensorData
-    #            (id int, date datetime, sensor_id int, latitude decimal, longitude decimal, pm10 real, pm2_5 real)''')
 
     sensorList = [line.rstrip('\n') for line in open("SensorList.txt")]
 
