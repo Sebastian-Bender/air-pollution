@@ -1,8 +1,8 @@
-function passVar(json) {
+function passVar(json, apikey) {
   var sensors = json
-
+  
   // Initialize the platform object:
-  const api_key = '{{apikey}}'
+  const api_key = apikey
   var platform = new H.service.Platform({
     'apikey': api_key
   });
@@ -33,7 +33,6 @@ function passVar(json) {
   // drawing a marker for each sensor
   var json = JSON.parse(sensors)
   console.log(Object.keys(json).length)
-  console.log(json[0])
 
   for(var i = 0; i < Object.keys(json).length; i++) {
     var sensor_lat = json[i]['latitude']
@@ -67,9 +66,15 @@ function passVar(json) {
     outerElement.appendChild(innerElement)
     var icon = new H.map.DomIcon(outerElement)
     var marker = new H.map.DomMarker({ lat: sensor_lat, lng: sensor_lon }, {icon: icon})
-      
+    const sensorData = json[i]
+    marker.addEventListener('tap', function(evt) {
+      console.log(sensorData);
+      console.log(evt.target.getGeometry());
+      map.setCenter(evt.target.getGeometry())
+      map.setZoom(15)
+    });
     // Add the marker to the map:
-    map.addObject(marker)
+    map.addObject(marker);
   }
 
   var bounds = new H.geo.Rect(51.4762, 8.3255, 52.2396, 9.5537)
