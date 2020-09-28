@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask import redirect, request, jsonify, url_for
 import main
 
 app = Flask(__name__)
@@ -9,7 +10,21 @@ def map_func():
         api_key = file.read()
 
     df_json = main.data_to_json(main.read_temp_DB())
-    return render_template('map.html', apikey = api_key, df_json = df_json)
+
+    sensor = main.read_DB()
+    sensor = sensor.resample('15min', on = 'timestamp').mean()
+    sensor.reset_index(inplace = True)
+    sensor.dropna(inplace = True)
+    return render_template('map.html', apikey = api_key, df_json = df_json, sensor = sensor.to_dict(orient = 'list'))
+
+@app.route("/get_df", methods=['GET'])
+def get_df():
+    jsdata = request.args.get('jdata')
+    df = main.read_sensor_from_DB(int(jsdata))
+    df = df.resample('30min', on = 'timestamp').mean()
+    df.dropna(inplace = True)
+    df.reset_index(inplace = True)
+    return jsonify(df.to_dict('list'))
 
 if __name__ == '__main__':
     app.run(debug = True) 

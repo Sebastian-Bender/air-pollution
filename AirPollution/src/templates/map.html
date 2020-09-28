@@ -10,28 +10,51 @@
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   </head>
     
   <body>
-    <div style="width: 95%; height: 95%;" id="mapContainer"></div>
+    <div style="width: 95%; height: 95%; margin: 2.5%" id="mapContainer"></div>
       <script type = "text/javascript", src = "{{ url_for('static', filename='js/map.js') }}"></script>
       <script type = 'text/javascript'>
         passVar('{{df_json|tojson}}', '{{apikey}}')
       </script>
       <div></div>
       <div>
-        <h2>Stats</h2>
-        <canvas id = 'stat container' width= 95%; height= 95%;></canvas>
+        <canvas id = 'stat container' width= 90%; height= 50%;></canvas>
         <script>
           var ctx = document.getElementById("stat container");
+          var plotData = JSON.parse('{{sensor|tojson}}')
           var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ["Group 1", "Group 2", "Group 3"],
-                datasets: [{
-                    label: 'Groups',
-                    data: [12, 19, 3]
-                }]
+              labels: plotData['timestamp'],
+              datasets: [{
+                data: plotData['PM10'],
+                label: 'PM10', 
+                borderColor: 'orange', 
+                fill: false
+              }, 
+              {
+                data: plotData['PM2_5'],
+                label: 'PM2.5',
+                borderColor: 'blue', 
+                fill: false
+              }]
+            },
+            options: {
+              responsive: true,
+              title: {
+                display: true,
+                text: 'Druchschnittliche Feinstaub Werte in OWL'
+              }, 
+               tooltips: {
+                 mode: 'label', 
+               },
+               hover: {
+                mode: 'nearest',
+                intersect: false
+              },
             }
           });
         </script>

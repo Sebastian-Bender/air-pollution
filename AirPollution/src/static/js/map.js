@@ -5,18 +5,60 @@ function Sleep(milliseconds) {
 async function sensor_info(sensorID) {
   console.log(`${sensorID} stats`)
   await Sleep(300)
-  var ctx = document.getElementById(`${sensorID} stats`);
-  console.log(ctx)
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ["Group 1", "Group 2", "Group 3"],
-          datasets: [{
-            label: 'Groups',
-            data: [12, 19, 3]
-          }]
+
+  $.ajax({
+    url : '/get_df',
+    dataType: "json",
+    data: {jdata: JSON.stringify(sensorID)},
+    contentType: 'application/json;charset=UTF-8',
+    success: function (data) {
+          console.log(data);
+          var ctx = document.getElementById(`${sensorID} stats`);
+          console.log(ctx)
+          var plotData = data
+                  var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                      labels: plotData['timestamp'],
+                      datasets: [{
+                        data: plotData['PM10'],
+                        label: 'PM10', 
+                        borderColor: 'orange', 
+                        fill: false
+                      }, 
+                      {
+                        data: plotData['PM2_5'],
+                        label: 'PM2.5',
+                        borderColor: 'blue', 
+                        fill: false
+                      }]
+                    },
+                    options: {
+                      responsive: true,
+                      title: {
+                        display: true,
+                        text: 'Druchschnittliche Feinstaub Werte in OWL'
+                      }, 
+                       tooltips: {
+                         mode: 'label', 
+                       },
+                       hover: {
+                        mode: 'nearest',
+                        intersect: false
+                      },
+                      scales: {
+                        xAxes: [{
+                          ticks: {
+                            display: false
+                          }
+                        }]
+                      }
+                    }
+                  });
         }
-      });
+    });
+
+
 }
 
 function passVar(json, apikey) {
@@ -99,7 +141,7 @@ function passVar(json, apikey) {
       //bubbleHTML.setAttribute("id", "sensor stats")
       bubbleHTML.innerHTML = `
         <p>SensorID: ${sensorData['sensor_id']}</p>
-        <canvas id = '${sensorData['sensor_id']} stats' width= 400; height= 200;></canvas>
+        <canvas id = '${sensorData['sensor_id']} stats' width= 500; height= 350;></canvas>
       `
 
       sensor_info(sensorData['sensor_id'])

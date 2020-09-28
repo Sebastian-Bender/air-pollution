@@ -1,7 +1,6 @@
 import requests
 import pandas as pd
 import sqlite3
-import time
 import datetime
 
 # longitudes
@@ -124,12 +123,14 @@ def update_DB():
 def read_DB():
     conn = sqlite3.connect('sensor.db')
     df = pd.read_sql_query('SELECT * FROM sensorData', conn, index_col='index')
-    print(df)
+    df.timestamp = pd.to_datetime(df.timestamp)
+    return df
 
 def read_sensor_from_DB(sensorID):
     conn = sqlite3.connect('sensor.db')
     df = pd.read_sql_query(f'SELECT * FROM sensorData WHERE sensor_id = {sensorID}', conn, index_col = 'index')
-    print(df)
+    df['timestamp'] = pd.to_datetime(df.timestamp)
+    return df
 
 def data_to_json(df):
     return df.to_dict('index')
