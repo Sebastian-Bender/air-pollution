@@ -126,9 +126,9 @@ def read_DB():
     df = pd.read_sql_query('SELECT * FROM sensorData', conn, index_col='index')
     print(df)
 
-def read_sensor_from_DB(sensor):
+def read_sensor_from_DB(sensorID):
     conn = sqlite3.connect('sensor.db')
-    df = pd.read_sql_query(f'SELECT * FROM sensorData WHERE sensor_id = {sensor}', conn, index_col = 'index')
+    df = pd.read_sql_query(f'SELECT * FROM sensorData WHERE sensor_id = {sensorID}', conn, index_col = 'index')
     print(df)
 
 def data_to_json(df):

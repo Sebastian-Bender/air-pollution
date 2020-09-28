@@ -1,3 +1,24 @@
+function Sleep(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+ }
+
+async function sensor_info(sensorID) {
+  console.log(`${sensorID} stats`)
+  await Sleep(300)
+  var ctx = document.getElementById(`${sensorID} stats`);
+  console.log(ctx)
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ["Group 1", "Group 2", "Group 3"],
+          datasets: [{
+            label: 'Groups',
+            data: [12, 19, 3]
+          }]
+        }
+      });
+}
+
 function passVar(json, apikey) {
   var sensors = json
   
@@ -66,13 +87,27 @@ function passVar(json, apikey) {
     outerElement.appendChild(innerElement)
     var icon = new H.map.DomIcon(outerElement)
     var marker = new H.map.DomMarker({ lat: sensor_lat, lng: sensor_lon }, {icon: icon})
+
     const sensorData = json[i]
     marker.addEventListener('tap', function(evt) {
       console.log(sensorData);
       console.log(evt.target.getGeometry());
       map.setCenter(evt.target.getGeometry())
       map.setZoom(15)
-    });
+
+      var bubbleHTML = document.createElement('div')
+      //bubbleHTML.setAttribute("id", "sensor stats")
+      bubbleHTML.innerHTML = `
+        <p>SensorID: ${sensorData['sensor_id']}</p>
+        <canvas id = '${sensorData['sensor_id']} stats' width= 400; height= 200;></canvas>
+      `
+
+      sensor_info(sensorData['sensor_id'])
+      var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+        content: bubbleHTML,
+      })
+      ui.addBubble(bubble)
+    }, false);
     // Add the marker to the map:
     map.addObject(marker);
   }
@@ -96,3 +131,4 @@ function passVar(json, apikey) {
     }
   });
 }
+
