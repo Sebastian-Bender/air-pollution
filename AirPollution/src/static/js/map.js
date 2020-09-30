@@ -1,12 +1,7 @@
-function Sleep(milliseconds) {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
- }
-
 async function sensor_info(sensorID) {
   console.log(`${sensorID} stats`)
-  await Sleep(300)
 
-  $.ajax({
+  await $.ajax({
     url : '/get_df',
     dataType: "json",
     data: {jdata: JSON.stringify(sensorID)},
@@ -37,7 +32,7 @@ async function sensor_info(sensorID) {
                       responsive: true,
                       title: {
                         display: true,
-                        text: 'Druchschnittliche Feinstaub Werte in OWL'
+                        text: `Werte am Sensor: ${sensorID}`
                       }, 
                        tooltips: {
                          mode: 'label', 
@@ -107,10 +102,10 @@ function passVar(json, apikey) {
     
     outerElement.style.color = 'white'
     outerElement.style.backgroundColor = 'green'
-    if(json[i]['PM10'] >= 40) {
+    if(json[i]['PM10'] >= 100 || json[i]['PM2_5'] >= 80) {
       outerElement.style.background = 'red'
     }
-    else if(json[i]['PM10'] >= 20) {
+    else if(json[i]['PM10'] >= 50 || json[i]['PM2_5'] >= 80) {
       outerElement.style.backgroundColor = 'yellow'
     }
     outerElement.style.border = '2px solid black'

@@ -36,7 +36,6 @@ def get_data():
     df = df[df.latitude <= latitude_max]
     df = df[df.latitude >= latitude_min]
 
-
     df['SensorID'] = df['sensor'].apply(lambda x: x.get('id'))
 
     p1 = df['sensordatavalues'].apply(lambda x: x[0]).apply(lambda x: x.get('value'))
@@ -69,7 +68,7 @@ def read_temp_DB():
     df = pd.read_sql_query('SELECT * FROM tempData', con = conn, index_col = 'index')
     return df
 
-def get_sensorList():
+def create_sensorList():
     df = get_data()
     sensorList = set(df['SensorID'])
     print(len(sensorList))
@@ -129,7 +128,7 @@ def read_DB():
 def read_sensor_from_DB(sensorID):
     conn = sqlite3.connect('sensor.db')
     df = pd.read_sql_query(f'SELECT * FROM sensorData WHERE sensor_id = {sensorID}', conn, index_col = 'index')
-    df['timestamp'] = pd.to_datetime(df.timestamp)
+    df.timestamp = pd.to_datetime(df.timestamp)
     return df
 
 def data_to_json(df):

@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from flask import redirect, request, jsonify, url_for
+from flask import request, jsonify
 import main
 
 app = Flask(__name__)
