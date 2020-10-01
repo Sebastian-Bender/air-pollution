@@ -55,14 +55,6 @@ def get_data():
     
     return df
 
-def create_temp_DB():
-    conn = sqlite3.connect('sensor.db')
-    c = conn.cursor()
-    #if (c.execute('SELECT name FROM sensor.db WHERE type = "table" AND name = "tempData"')):
-    c.execute('DROP TABLE tempData')
-    df = get_data()
-    df.to_sql(name = 'tempData', con = conn)
-
 def read_temp_DB():
     conn = sqlite3.connect('sensor.db')
     df = pd.read_sql_query('SELECT * FROM tempData', con = conn, index_col = 'index')
@@ -113,11 +105,6 @@ def create_DB():
     sensorData.reset_index(inplace = True, drop = True)
 
     sensorData.to_sql(name = 'sensorData', con = conn)
-
-def update_DB():
-    conn = sqlite3.connect('sensor.db')
-    df = read_temp_DB()
-    df.to_sql(name = 'sensorData', con = conn, if_exists = 'append')
 
 def read_DB():
     conn = sqlite3.connect('sensor.db')
