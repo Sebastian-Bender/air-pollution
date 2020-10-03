@@ -135,8 +135,8 @@ function passVar(json, apikey) {
       var bubbleHTML = document.createElement('div')
       //bubbleHTML.setAttribute("id", "sensor stats")
       bubbleHTML.innerHTML = `
-        <p>SensorID: ${sensorData['sensor_id']}</p>
-        <canvas id = '${sensorData['sensor_id']} stats' width= 500; height= 350;></canvas>
+        <p>SensorID: ${sensorData['sensor_id']}, timestamp: ${sensorData['timestamp']}, PM10: ${sensorData['PM10']}, PM2.5: ${sensorData['PM2_5']}</p>
+        <canvas id = '${sensorData['sensor_id']} stats' width= 550; height= 350;></canvas>
       `
 
       sensor_info(sensorData['sensor_id'])

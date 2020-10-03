@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">   
     <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"type="text/javascript" charset="utf-8"></script>
@@ -19,45 +20,58 @@
       <script type = 'text/javascript'>
         passVar('{{df_json|tojson}}', '{{apikey}}')
       </script>
-      <div></div>
-      <div>
-        <canvas id = 'stat container' width= 90%; height= 50%;></canvas>
-        <script>
-          var ctx = document.getElementById("stat container");
-          var plotData = JSON.parse('{{sensor|tojson}}')
-          var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: plotData['timestamp'],
-              datasets: [{
-                data: plotData['PM10'],
-                label: 'PM10', 
-                borderColor: 'orange', 
-                fill: false
-              }, 
-              {
-                data: plotData['PM2_5'],
-                label: 'PM2.5',
-                borderColor: 'blue', 
-                fill: false
-              }]
-            },
-            options: {
-              responsive: true,
-              title: {
-                display: true,
-                text: 'Druchschnittliche Feinstaub Werte in OWL'
-              }, 
-               tooltips: {
-                 mode: 'label', 
-               },
-               hover: {
-                mode: 'nearest',
-                intersect: false
+      <div class = "grid">
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae repudiandae neque ab corrupti dolore officia odio, velit, nihil numquam impedit adipisci autem? Hic magnam ullam accusantium, quasi provident eveniet, optio consectetur ut nulla ipsam fugiat blanditiis consequatur dolores tenetur odio quis minus ipsa laborum consequuntur pariatur cumque excepturi aperiam! Accusantium, itaque praesentium impedit laborum amet voluptas, at ipsam rem quae, maxime culpa. Blanditiis, quae nemo ipsam at necessitatibus ratione reiciendis nam accusamus voluptatum dolor corrupti ad? Quasi vel dolores sunt, aspernatur magnam eius dignissimos! Autem adipisci blanditiis atque excepturi debitis, quod animi vitae ab, modi officia delectus pariatur inventore sequi!</div>
+        <div>
+          <canvas id = 'stat container' width= 90%; height= 50%;></canvas>
+          <script>
+            var ctx = document.getElementById("stat container");
+            var plotData = JSON.parse('{{sensor|tojson}}')
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: plotData['timestamp'],
+                datasets: [{
+                  data: plotData['PM10'],
+                  label: 'PM10', 
+                  borderColor: 'orange', 
+                  fill: false
+                }, 
+                {
+                  data: plotData['PM2_5'],
+                  label: 'PM2.5',
+                  borderColor: 'blue', 
+                  fill: false
+                }]
               },
-            }
-          });
-        </script>
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: 'Druchschnittliche Feinstaub Werte in OWL'
+                }, 
+                 tooltips: {
+                   mode: 'label', 
+                 },
+                 hover: {
+                  mode: 'nearest',
+                  intersect: false
+                },
+              }
+            });
+          </script>
+        </div>
+      </div>
+      <div class="grid2">
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia explicabo autem ad perspiciatis est a inventore qui esse eum saepe. Rerum est non voluptates nulla expedita unde in odit quisquam!
+        </div>
+        <div>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero itaque dolorum natus rem, ex impedit alias facilis blanditiis accusantium ipsum facere inventore repellat voluptatem rerum consequatur molestiae, quasi ipsa quia!
+        </div>
+        <div>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis aperiam ad illum impedit harum explicabo inventore quibusdam corporis dolorem repellat, eveniet consequatur, illo optio velit! Minima repellendus veniam at! Voluptas?
+        </div>
       </div>
   </body>
 </html>
