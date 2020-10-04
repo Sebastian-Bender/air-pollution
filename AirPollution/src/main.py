@@ -44,10 +44,6 @@ def get_data():
     df['P2'] = p2
 
     df.drop(['sensor', 'sensordatavalues'], axis = 1, inplace = True)
-
-    # only keep the newest value for sensors with multiple values
-    df.sort_values(by = ['SensorID', 'timestamp'], ascending = False, inplace = True)
-    df.drop_duplicates(subset='SensorID', keep="first", inplace = True)
     
     df = df[['timestamp', 'SensorID', 'latitude', 'longitude', 'P1', 'P2']]
     df.columns = ['timestamp', 'sensor_id', 'latitude', 'longitude', 'PM10', 'PM2_5']
@@ -55,13 +51,13 @@ def get_data():
     
     return df
 
-def read_temp_DB():
-    conn = sqlite3.connect('sensor.db')
-    df = pd.read_sql_query('SELECT * FROM tempData', con = conn, index_col = 'index')
-    return df
-
 def create_sensorList():
     df = get_data()
+
+    # only keep the newest value for sensors with multiple values
+    df.sort_values(by = ['SensorID', 'timestamp'], ascending = False, inplace = True)
+    df.drop_duplicates(subset='SensorID', keep="first", inplace = True)
+
     sensorList = set(df['SensorID'])
     print(len(sensorList))
 
@@ -111,6 +107,16 @@ def read_DB():
     df = pd.read_sql_query('SELECT * FROM sensorData', conn, index_col='index')
     df.timestamp = pd.to_datetime(df.timestamp)
     return df
+
+def read_newest_sensorData():
+    df = read_DB()
+    df = df.groupby('sensor_id', group_keys = False).resample('60min', on = 'timestamp').mean()
+    df.dropna(inplace = True)
+    df.sensor_id = df.sensor_id.astype('int64')
+    df.reset_index(inplace = True)
+    df = df.round({'PM10': 2, 'PM2_5': 2})
+    return df.loc[df.groupby('sensor_id').timestamp.idxmax()].reset_index(drop = True)
+    
 
 def read_sensor_from_DB(sensorID):
     conn = sqlite3.connect('sensor.db')

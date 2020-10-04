@@ -56,7 +56,7 @@
                  hover: {
                   mode: 'nearest',
                   intersect: false
-                },
+                }
               }
             });
           </script>
@@ -64,13 +64,121 @@
       </div>
       <div class="grid2">
         <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia explicabo autem ad perspiciatis est a inventore qui esse eum saepe. Rerum est non voluptates nulla expedita unde in odit quisquam!
+          <canvas id = 'stat container bielefeld' width = 90%; height= 100%;></canvas>
+          <script>
+            var ctx = document.getElementById("stat container bielefeld");
+            var plotData = JSON.parse('{{sensor|tojson}}')
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: plotData['timestamp'],
+                datasets: [{
+                  data: plotData['PM10'],
+                  label: 'PM10', 
+                  borderColor: 'orange', 
+                  fill: false
+                }, 
+                {
+                  data: plotData['PM2_5'],
+                  label: 'PM2.5',
+                  borderColor: 'blue', 
+                  fill: false
+                }]
+              },
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: 'Durchschnittliche Feinstaub Werte in Bielefeld'
+                }, 
+                 tooltips: {
+                   mode: 'label', 
+                 },
+                 hover: {
+                  mode: 'nearest',
+                  intersect: false
+                },
+              }
+            });
+          </script>
         </div>
         <div>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero itaque dolorum natus rem, ex impedit alias facilis blanditiis accusantium ipsum facere inventore repellat voluptatem rerum consequatur molestiae, quasi ipsa quia!
+          <canvas id = 'stat container guetersloh' width= 90%; height= 100%;></canvas>
+          <script>
+            var ctx = document.getElementById("stat container guetersloh");
+            var plotData = JSON.parse('{{sensor|tojson}}')
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: plotData['timestamp'],
+                datasets: [{
+                  data: plotData['PM10'],
+                  label: 'PM10', 
+                  borderColor: 'orange', 
+                  fill: false
+                }, 
+                {
+                  data: plotData['PM2_5'],
+                  label: 'PM2.5',
+                  borderColor: 'blue', 
+                  fill: false
+                }]
+              },
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: 'Durchschnittliche Feinstaub Werte in Guetersloh'
+                }, 
+                 tooltips: {
+                   mode: 'label', 
+                 },
+                 hover: {
+                  mode: 'nearest',
+                  intersect: false
+                },
+              }
+            });
+          </script>
         </div>
         <div>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis aperiam ad illum impedit harum explicabo inventore quibusdam corporis dolorem repellat, eveniet consequatur, illo optio velit! Minima repellendus veniam at! Voluptas?
+          <canvas id = 'stat container paderborn' width= 90%; height= 100%;></canvas>
+          <script>
+            var ctx = document.getElementById("stat container paderborn");
+            var plotData = JSON.parse('{{sensor|tojson}}')
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: plotData['timestamp'],
+                datasets: [{
+                  data: plotData['PM10'],
+                  label: 'PM10', 
+                  borderColor: 'orange', 
+                  fill: false
+                }, 
+                {
+                  data: plotData['PM2_5'],
+                  label: 'PM2.5',
+                  borderColor: 'blue', 
+                  fill: false
+                }]
+              },
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: 'Durchschnittliche Feinstaub Werte in Paderborn'
+                }, 
+                 tooltips: {
+                   mode: 'label', 
+                 },
+                 hover: {
+                  mode: 'nearest',
+                  intersect: false
+                },
+              }
+            });
+          </script>
         </div>
       </div>
   </body>

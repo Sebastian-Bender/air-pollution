@@ -9,10 +9,11 @@ def map_func():
     with open('api_key.txt', 'r') as file:
         api_key = file.read()
 
-    df_json = main.data_to_json(main.get_data())
+    #df_json = main.data_to_json(main.get_data())
+    df_json = main.data_to_json(main.read_newest_sensorData())
 
     sensor = main.read_DB()
-    sensor = sensor.resample('60min', on = 'timestamp').mean()
+    sensor = sensor.resample('D', on = 'timestamp').mean()
     sensor.reset_index(inplace = True)
     sensor.dropna(inplace = True)
     return render_template('map.html', apikey = api_key, df_json = df_json, sensor = sensor.to_dict(orient = 'list'))

@@ -44,7 +44,7 @@ async function sensor_info(sensorID) {
                       scales: {
                         xAxes: [{
                           ticks: {
-                            display: false
+                            display: false,
                           }
                         }]
                       }
