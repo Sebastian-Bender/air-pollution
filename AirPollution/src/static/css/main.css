@@ -5,6 +5,12 @@
 
 .grid2 {
     display: grid;
-    grid-template-columns: 33% 33% 34%;
-    height: 400px
+    grid-template-columns: 45% 45%;
+    grid-gap: 5%;
+    height: 520px;
+}
+
+.grid3 {
+    display: grid;
+    grid-template-columns: 10% 85%;
 }

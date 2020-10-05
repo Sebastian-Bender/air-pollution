@@ -21,12 +21,30 @@
         passVar('{{df_json|tojson}}', '{{apikey}}')
       </script>
       <div class = "grid">
-        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae repudiandae neque ab corrupti dolore officia odio, velit, nihil numquam impedit adipisci autem? Hic magnam ullam accusantium, quasi provident eveniet, optio consectetur ut nulla ipsam fugiat blanditiis consequatur dolores tenetur odio quis minus ipsa laborum consequuntur pariatur cumque excepturi aperiam! Accusantium, itaque praesentium impedit laborum amet voluptas, at ipsam rem quae, maxime culpa. Blanditiis, quae nemo ipsam at necessitatibus ratione reiciendis nam accusamus voluptatum dolor corrupti ad? Quasi vel dolores sunt, aspernatur magnam eius dignissimos! Autem adipisci blanditiis atque excepturi debitis, quod animi vitae ab, modi officia delectus pariatur inventore sequi!</div>
+        <div>
+          <h3>Feinstaub</h3>
+            <p>
+              Feinstaub ist nahezu unsichtbar und wird auch als Schwebstaub (englisch: Partikulate Matter) bezeichnet. Die winzigen Staubteilchen sind in drei Klassen unterteilt:
+              <br>
+              1. Partikel mit einem Durchmesser von 10 Mikrometer, also zehn Millionstel Meter und weniger (PM10).
+              <br>
+              2. Partikel, die vier Mal kleiner sind, also PM2,5 mit einem Durchmesser von weniger als 2,5 Mikrometer
+              <br>
+              3. Partikel, die ein Mikrometer und kleiner sind: so genannter Ultrafeinstaub PM0,1.
+            </p>
+          <h3>Anleitung:</h3> 
+          <p>
+            Auf die Sensoren klicken für eine Übersicht der stündlichen Werte am entsprechenden Sensor.
+          </p>
+          <p>
+            Unten im dropdown-Menü einen Ort auswählen für den Verlauf des Tagesdurchschnitts.
+          </p>
+        </div>
         <div>
           <canvas id = 'stat container' width= 90%; height= 50%;></canvas>
           <script>
             var ctx = document.getElementById("stat container");
-            var plotData = JSON.parse('{{sensor|tojson}}')
+            var plotData = JSON.parse('{{owl|tojson}}')
             var myChart = new Chart(ctx, {
               type: 'line',
               data: {
@@ -48,14 +66,21 @@
                 responsive: true,
                 title: {
                   display: true,
-                  text: 'Druchschnittliche Feinstaub Werte in OWL'
+                  text: 'Tagesdurchschnitt: OWL'
                 }, 
-                 tooltips: {
-                   mode: 'label', 
-                 },
-                 hover: {
+                tooltips: {
+                  mode: 'label', 
+                },
+                hover: {
                   mode: 'nearest',
                   intersect: false
+                },
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
                 }
               }
             });
@@ -64,10 +89,10 @@
       </div>
       <div class="grid2">
         <div>
-          <canvas id = 'stat container bielefeld' width = 90%; height= 100%;></canvas>
+          <canvas id = 'stat container bielefeld' width = 90%; height= 60%;></canvas>
           <script>
             var ctx = document.getElementById("stat container bielefeld");
-            var plotData = JSON.parse('{{sensor|tojson}}')
+            var plotData = JSON.parse('{{bielefeld|tojson}}')
             var myChart = new Chart(ctx, {
               type: 'line',
               data: {
@@ -89,7 +114,7 @@
                 responsive: true,
                 title: {
                   display: true,
-                  text: 'Durchschnittliche Feinstaub Werte in Bielefeld'
+                  text: 'Tagesdurchschnitt: Bielefeld'
                 }, 
                  tooltips: {
                    mode: 'label', 
@@ -98,54 +123,22 @@
                   mode: 'nearest',
                   intersect: false
                 },
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
               }
             });
           </script>
         </div>
         <div>
-          <canvas id = 'stat container guetersloh' width= 90%; height= 100%;></canvas>
-          <script>
-            var ctx = document.getElementById("stat container guetersloh");
-            var plotData = JSON.parse('{{sensor|tojson}}')
-            var myChart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: plotData['timestamp'],
-                datasets: [{
-                  data: plotData['PM10'],
-                  label: 'PM10', 
-                  borderColor: 'orange', 
-                  fill: false
-                }, 
-                {
-                  data: plotData['PM2_5'],
-                  label: 'PM2.5',
-                  borderColor: 'blue', 
-                  fill: false
-                }]
-              },
-              options: {
-                responsive: true,
-                title: {
-                  display: true,
-                  text: 'Durchschnittliche Feinstaub Werte in Guetersloh'
-                }, 
-                 tooltips: {
-                   mode: 'label', 
-                 },
-                 hover: {
-                  mode: 'nearest',
-                  intersect: false
-                },
-              }
-            });
-          </script>
-        </div>
-        <div>
-          <canvas id = 'stat container paderborn' width= 90%; height= 100%;></canvas>
+          <canvas id = 'stat container paderborn' width= 90%; height= 60%;></canvas>
           <script>
             var ctx = document.getElementById("stat container paderborn");
-            var plotData = JSON.parse('{{sensor|tojson}}')
+            var plotData = JSON.parse('{{paderborn|tojson}}')
             var myChart = new Chart(ctx, {
               type: 'line',
               data: {
@@ -167,19 +160,137 @@
                 responsive: true,
                 title: {
                   display: true,
-                  text: 'Durchschnittliche Feinstaub Werte in Paderborn'
+                  text: 'Tagesdurchschnitt: Paderborn'
                 }, 
-                 tooltips: {
-                   mode: 'label', 
-                 },
-                 hover: {
+                tooltips: {
+                  mode: 'label', 
+                },
+                hover: {
                   mode: 'nearest',
                   intersect: false
                 },
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
               }
             });
           </script>
         </div>
       </div>
+      <div class="grid3">
+        <div>
+          <label for="Ort">Ort:</label>
+          <select name="Ort" id="Ort">
+            <option value = "">Bitte Ort auswählen</option>
+            <option value = "Loehne">Loehne</option>
+            <option value = "Horn-Bad Meinberg">Horn-Bad Meinberg</option>
+            <option value = "Hofgeismar">Hofgeismar</option>
+            <option value = "Lippstadt">Lippstadt</option>
+            <option value = "Vlotho">Vlotho</option>
+            <option value = "Geseke">Geseke</option>
+            <option value = "Herford">Herford</option>
+            <option value = "Paderborn">Paderborn</option>
+            <option value = "Lemgo">Lemgo</option>
+            <option value = "Bodenfelde">Bodenfelde</option>
+            <option value = "Leopoldshohe">Leopoldshohe</option>
+            <option value = "Altenbeken">Altenbeken</option>
+            <option value = "Verl">Verl</option>
+            <option value = "Dorentrup">Dorentrup</option>
+            <option value = "Bad Driburg">Bad Driburg</option>
+            <option value = "Hessisch Oldendorf">Hessisch Oldendorf</option>
+            <option value = "Golmbach">Golmbach</option>
+            <option value = "Bad Salzuflen">Bad Salzuflen</option>
+            <option value = "Bad Lippspringe">Bad Lippspringe</option>
+            <option value = "Hovelhof">Hovelhof</option>
+            <option value = "Rheda-Wiedenbruck">Rheda-Wiedenbruck</option>
+            <option value = "Bad Pyrmont">Bad Pyrmont</option>
+            <option value = "Hameln">Hameln</option>
+            <option value = "Hiddenhausen">Hiddenhausen</option>
+            <option value = "Guetersloh">Guetersloh</option>
+            <option value = "Blomberg">Blomberg</option>
+            <option value = "Oerlinghausen">Oerlinghausen</option>
+            <option value = "Halle">Halle</option>
+            <option value = "Rietberg">Rietberg</option>
+            <option value = "Holzminden">Holzminden</option>
+            <option value = "Bielefeld">Bielefeld</option>
+            <option value = "Erwitte">Erwitte</option>
+            <option value = "Bad Oeynhausen">Bad Oeynhausen</option>
+            <option value = "Neuenkirchen">Neuenkirchen</option>
+            <option value = "Detmold">Detmold</option>
+            <option value = "Steinhagen">Steinhagen</option>
+            <option value = "Buende">Buende</option>
+            <option value = "Spenge">Spenge</option>
+            <option value = "Bad Meinberg">Bad Meinberg</option>
+            <option value = "Delbruck">Delbruck</option>
+          </select>
+        </div>
+        <div>
+          <canvas id = 'select container' width= 70%; height = 30$;></canvas>
+          <script>
+            let sel = document.getElementById("Ort");
+            sel.addEventListener("change", function() {
+
+              var city = sel.options[sel.selectedIndex].value;
+              console.log(city)
+              $.ajax({
+                url : '/get_location',
+                dataType: "json",
+                data: {jdata: JSON.stringify(city)},
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                      console.log(data);
+                      var ctx = document.getElementById(`select container`);
+                      console.log(ctx)
+                      var plotData = data
+                              var myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                  labels: plotData['timestamp'],
+                                  datasets: [{
+                                    data: plotData['PM10'],
+                                    label: 'PM10', 
+                                    borderColor: 'orange', 
+                                    fill: false
+                                  }, 
+                                  {
+                                    data: plotData['PM2_5'],
+                                    label: 'PM2.5',
+                                    borderColor: 'blue', 
+                                    fill: false
+                                  }]
+                                },
+                                options: {
+                                  responsive: true,
+                                  title: {
+                                    display: true,
+                                    text: `Tagesdurchschnitt: ${city}`
+                                  }, 
+                                   tooltips: {
+                                     mode: 'label', 
+                                   },
+                                   hover: {
+                                    mode: 'nearest',
+                                    intersect: false
+                                  },
+                                  scales: {
+                                    yAxes: [{
+                                      ticks: {
+                                        beginAtZero: true
+                                      }
+                                    }]
+                                  }
+                                }
+                              });
+                    }
+                });
+            })
+          </script>
+        </div>
+      </div>
+      <div style = "width: 100%; min-height: 200px"></div>
   </body>
 </html>

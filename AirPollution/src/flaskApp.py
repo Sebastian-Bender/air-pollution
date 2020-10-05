@@ -10,19 +10,48 @@ def map_func():
         api_key = file.read()
 
     #df_json = main.data_to_json(main.get_data())
-    df_json = main.data_to_json(main.read_newest_sensorData())
+    df_json = main.data_to_json(main.read_last_day_mean_sensorData())
 
-    sensor = main.read_DB()
-    sensor = sensor.resample('D', on = 'timestamp').mean()
-    sensor.reset_index(inplace = True)
-    sensor.dropna(inplace = True)
-    return render_template('map.html', apikey = api_key, df_json = df_json, sensor = sensor.to_dict(orient = 'list'))
+    owl = main.read_DB()
+    owl = owl.resample('D', on = 'timestamp').mean()
+    owl.reset_index(inplace = True)
+    owl.dropna(inplace = True)
+
+    bielefeld = main.read_location_from_DB('Bielefeld')
+    bielefeld = bielefeld.resample('D', on = 'timestamp').mean()
+    bielefeld.reset_index(inplace = True)
+    bielefeld.dropna(inplace = True)
+
+    paderborn = main.read_location_from_DB('Paderborn')
+    paderborn = paderborn.resample('D', on = 'timestamp').mean()
+    paderborn.reset_index(inplace = True)
+    paderborn.dropna(inplace = True)
+
+
+    return render_template(
+        'map.html', 
+        apikey = api_key, 
+        df_json = df_json, 
+        owl = owl.to_dict(orient = 'list'), 
+        bielefeld = bielefeld.to_dict(orient = 'list'), 
+        paderborn = paderborn.to_dict(orient = 'list'))
 
 @app.route("/get_df", methods=['GET'])
 def get_df():
     jsdata = request.args.get('jdata')
     df = main.read_sensor_from_DB(int(jsdata))
     df = df.resample('60min', on = 'timestamp').mean()
+    df.dropna(inplace = True)
+    df.reset_index(inplace = True)
+    return jsonify(df.to_dict('list'))
+
+@app.route("/get_location", methods=['GET'])
+def get_location():
+    jsdata = request.args.get('jdata')
+    jsdata = jsdata[1:-1]
+    print(jsdata)
+    df = main.read_location_from_DB(jsdata)
+    df = df.resample('D', on = 'timestamp').mean()
     df.dropna(inplace = True)
     df.reset_index(inplace = True)
     return jsonify(df.to_dict('list'))
