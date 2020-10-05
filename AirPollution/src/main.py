@@ -13,7 +13,6 @@ latitude_max = 52.2396
 latitude_min = 51.4762
 
 def get_current_data():
-    # returns a dataframe containing p10 and p2.5 values of sensors in OWL and the longitude latitude values of these sensors
     url = 'http://api.luftdaten.info/static/v1/data.json'
     r = requests.get(url)
     rdata = r.json()
@@ -167,9 +166,6 @@ def read_location_from_DB(location):
     df = pd.read_sql_query(f'SELECT * FROM sensorData WHERE location = "{location}"', conn, index_col = 'index')
     df.timestamp = pd.to_datetime(df.timestamp)
     return df
-
-def data_to_json(df):
-    return df.to_dict('index')
 
 
 if __name__ == '__main__':

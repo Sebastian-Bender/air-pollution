@@ -102,10 +102,10 @@ function passVar(json, apikey) {
     
     outerElement.style.color = 'white'
     outerElement.style.backgroundColor = 'green'
-    if(json[i]['PM10'] >= 100 || json[i]['PM2_5'] >= 80) {
+    if(json[i]['PM10'] >= 50 || json[i]['PM2_5'] >= 25) {
       outerElement.style.background = 'red'
     }
-    else if(json[i]['PM10'] >= 50 || json[i]['PM2_5'] >= 80) {
+    else if(json[i]['PM10'] >= 40 || json[i]['PM2_5'] >= 20) {
       outerElement.style.backgroundColor = 'yellow'
     }
     outerElement.style.border = '2px solid black'

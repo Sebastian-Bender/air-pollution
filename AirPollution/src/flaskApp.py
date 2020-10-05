@@ -9,8 +9,7 @@ def map_func():
     with open('api_key.txt', 'r') as file:
         api_key = file.read()
 
-    #df_json = main.data_to_json(main.get_data())
-    df_json = main.data_to_json(main.read_last_day_mean_sensorData())
+    df_json = main.read_last_day_mean_sensorData().to_dict('index')
 
     owl = main.read_DB()
     owl = owl.resample('D', on = 'timestamp').mean()
