@@ -83,7 +83,8 @@ function passVar(json, apikey) {
     });
 
   window.addEventListener('resize', () => map.getViewPort().resize())
-  // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+
+  // Behavior implements default interactions for pan/zoom 
   var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map))
 
   var ui = H.ui.UI.createDefault(map, maptypes)
@@ -96,7 +97,6 @@ function passVar(json, apikey) {
     var sensor_lat = json[i]['latitude']
     var sensor_lon = json[i]['longitude']
 
-    // test start
     var outerElement = document.createElement('div')
     var innerElement = document.createElement('div')
     
@@ -125,6 +125,7 @@ function passVar(json, apikey) {
     var icon = new H.map.DomIcon(outerElement)
     var marker = new H.map.DomMarker({ lat: sensor_lat, lng: sensor_lon }, {icon: icon})
 
+    // Adding eventListener to the marker
     const sensorData = json[i]
     marker.addEventListener('tap', function(evt) {
       console.log(sensorData);
@@ -149,6 +150,7 @@ function passVar(json, apikey) {
     map.addObject(marker);
   }
 
+  // Add bounds to the map so that the markers are always visible
   var bounds = new H.geo.Rect(51.4762, 8.3255, 52.2396, 9.5537)
   map.getViewModel().addEventListener('sync', function() {
     var center = map.getCenter();

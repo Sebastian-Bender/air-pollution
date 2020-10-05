@@ -13,18 +13,18 @@ def map_func():
 
     owl = main.read_DB()
     owl = owl.resample('D', on = 'timestamp').mean()
-    owl.reset_index(inplace = True)
     owl.dropna(inplace = True)
+    owl.reset_index(inplace = True)
 
     bielefeld = main.read_location_from_DB('Bielefeld')
     bielefeld = bielefeld.resample('D', on = 'timestamp').mean()
-    bielefeld.reset_index(inplace = True)
     bielefeld.dropna(inplace = True)
+    bielefeld.reset_index(inplace = True)
 
     paderborn = main.read_location_from_DB('Paderborn')
     paderborn = paderborn.resample('D', on = 'timestamp').mean()
-    paderborn.reset_index(inplace = True)
     paderborn.dropna(inplace = True)
+    paderborn.reset_index(inplace = True)
 
 
     return render_template(

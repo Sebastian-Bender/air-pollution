@@ -4,15 +4,13 @@ import sqlite3
 import datetime
 import reverse_geocoder as rg
 
-# longitudes
-longitude_min = 8.3255
-longitude_max = 9.5537
-
-# latitudes
-latitude_max = 52.2396
-latitude_min = 51.4762
-
 def get_current_data():
+    longitude_min = 8.3255
+    longitude_max = 9.5537
+
+    latitude_max = 52.2396
+    latitude_min = 51.4762
+
     url = 'http://api.luftdaten.info/static/v1/data.json'
     r = requests.get(url)
     rdata = r.json()
@@ -26,7 +24,6 @@ def get_current_data():
 
     df = df.assign(longitude = longitude.values)
     df = df.assign(latitude = latitude.values)
-    df.drop(['location', 'sampling_rate', 'id'], axis = 1, inplace = True)
 
     df['longitude'] = pd.to_numeric(df.longitude)
     df['latitude'] = pd.to_numeric(df.latitude)
@@ -42,8 +39,6 @@ def get_current_data():
     p2 = df['sensordatavalues'].apply(lambda x: x[1]).apply(lambda x: x.get('value'))
     df['P1'] = p1
     df['P2'] = p2
-
-    df.drop(['sensor', 'sensordatavalues'], axis = 1, inplace = True)
     
     df = df[['timestamp', 'SensorID', 'latitude', 'longitude', 'P1', 'P2']]
     df.columns = ['timestamp', 'sensor_id', 'latitude', 'longitude', 'PM10', 'PM2_5']
@@ -108,6 +103,7 @@ def create_DB(start = '2020-07-31'):
     sensorData.columns = ['timestamp', 'sensor_id', 'latitude', 'longitude', 'PM10', 'PM2_5']
     sensorData.reset_index(inplace = True, drop = True)
     
+    # resample data to hourly mean
     sensorData = sensorData.groupby('sensor_id', group_keys = False).resample('60min', on = 'timestamp').mean()
     sensorData.dropna(inplace = True)
     sensorData.sensor_id = sensorData.sensor_id.astype('int64')
@@ -118,7 +114,7 @@ def create_DB(start = '2020-07-31'):
     with open('LocationList.txt', 'r') as f:
         s = f.read()
         locations = eval(s)
-    sensorData['location'] = ""
+
     sensorData['location'] = sensorData['sensor_id'].apply(lambda x: locations[x])
 
     sensorData.to_sql(name = 'sensorData', con = conn, if_exists='append')
@@ -140,6 +136,8 @@ def read_DB():
 
 def read_last_day_mean_sensorData():
     df = read_DB()
+
+    # resampling data from hourly mean to daily mean
     df = df.groupby('sensor_id', group_keys = False).resample('D', on = 'timestamp').mean()
     df.dropna(inplace = True)
     df.sensor_id = df.sensor_id.astype('int64')
@@ -147,6 +145,8 @@ def read_last_day_mean_sensorData():
     df = df.round({'PM10': 2, 'PM2_5': 2})
     # Add location column
 
+    # Location column is lost after resampling
+    # Add location column again
     with open('LocationList.txt', 'r') as f:
         s = f.read()
         locations = eval(s)
